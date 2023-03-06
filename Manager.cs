@@ -25,8 +25,9 @@ namespace ProjectPhotoTrap
         private static String savePath = @"../../../Photos/";
         private static int photo_id = 0;
 
-
-
+        private bool isStreaming = false;
+        private static int SAVE_FACE_SLEEP = 10000;
+        private bool madePhoto = false;
 
 
         public void DataRead(object sender, string message)
@@ -39,20 +40,32 @@ namespace ProjectPhotoTrap
             if (type == Type.FaceDetected)
             {
                 Console.WriteLine("Face");
-                SaveFace();
+                if (!madePhoto)
+                {
+                    SaveFace();
+                    madePhoto = true;
+                } else
+                {
+                    Thread.Sleep(SAVE_FACE_SLEEP);
+                    madePhoto = false;
+                }
             }
             else if (type == Type.ServerLink)
             {
                 this.link = ObtainLink(message);
-                TurnOnStream();
-                SetFaceDet(1);
+                if (link == null)
+                {
+                    throw new Exception("Camera didnt send link correctly, please restart program and camera"); // CATCH ME: chytat a automaticky zacit programu znovu
+                }
+                if (!isStreaming) TurnOnStream(); isStreaming = true;
+                SetFaceDet();
             }
 
         }
         // /stream
         private void TurnOnStream()
         {
-            Thread thread = new Thread(ThreadStream);
+            Thread thread = new Thread(new ThreadStart(ThreadStream));
             thread.Start();
         }
 
@@ -61,7 +74,11 @@ namespace ProjectPhotoTrap
             while (true)
             {
                 Console.WriteLine("Threading");
-                var web_request =WebRequest.Create(link+TURN_ON_STREAM);
+                if (link == null)
+                {
+                    throw new Exception("Link is null, please restart the camera");
+                }
+                var web_request = WebRequest.Create(link + TURN_ON_STREAM);
                 web_request.GetResponse();
             }
         }
@@ -73,11 +90,15 @@ namespace ProjectPhotoTrap
             using var response = await httpClient.GetAsync(link + GET_IMAGE);
             if (response.StatusCode != HttpStatusCode.OK)
             {
-                throw new Exception($"Failed to download image. Status code: {response.StatusCode}");
+                SaveFace();
+                return;
+                // throw new Exception($"Failed to download image. Status code: {response.StatusCode}");
             }
             if (!response.Content.Headers.ContentType.MediaType.StartsWith("image/"))
             {
-                throw new Exception("The URL does not contain an image.");
+                SaveFace();
+                return;
+                // throw new Exception("The URL does not contain an image.");
             }
             while (File.Exists(path))
             {
@@ -89,22 +110,10 @@ namespace ProjectPhotoTrap
             await responseStream.CopyToAsync(fileStream);
         }
 
-        private void SetFaceDet(int number)
+        private void SetFaceDet()
         {
-            string pattern = TURN_ON_FACE_DETECTION;
-            if (number == 0)
-            {
-                // turn off face recognition
-                pattern = pattern + "0";
-            }
-            else if (number == 1)
-            {
-                pattern = pattern + "1";
-            }
-            else
-            {
-                throw new Exception("To turn on face detection write 1 to turn off write 0, you wrote " + number);
-            }
+            String pattern = TURN_ON_FACE_DETECTION;
+            pattern = pattern + "1";
             WebRequest web_request = WebRequest.Create(link + pattern);
             web_request.Method = "GET";
             web_request.GetResponse();
