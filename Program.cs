@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("working");
+            Console.WriteLine("Restart camera for it to send ip");
             SerialPortConnection port = new SerialPortConnection("COM4",115200,1000);
             Manager manager = new Manager();
             port.AddSub(manager);

@@ -1,1 +1,2 @@
 Photos with faces will be saved here
+Time : Month-Day-Year-Hour-Minute-Second

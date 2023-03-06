@@ -11,8 +11,7 @@ namespace ProjectPhotoTrap
     internal class Manager : IPortMessage
     {
 
-        //D:\Documents\csharp\Projects\PhotoTrap\ProjectPhotoTrap\ProjectPhotoTrap\Photos\
-        // 3 back
+     
         private static String PATTERN_FOR_IP = @"http:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}";
 
         private static String TURN_ON_FACE_DETECTION = @"/control?var=face_detect&val=";
@@ -32,8 +31,7 @@ namespace ProjectPhotoTrap
 
         public void DataRead(object sender, string message)
         {
-            Console.WriteLine("reading");
-            Console.WriteLine(message);
+            throw new NotImplementedException("This is deprecated");
         }
         public void DataRead(object sender, string message, Type type)
         {
@@ -60,15 +58,12 @@ namespace ProjectPhotoTrap
                 if (!isStreaming) TurnOnStream(); isStreaming = true;
                 SetFaceDet();
             }
-
         }
-        // /stream
         private void TurnOnStream()
         {
             Thread thread = new Thread(new ThreadStart(ThreadStream));
             thread.Start();
         }
-
         private void ThreadStream()
         {
             while (true)
@@ -82,23 +77,22 @@ namespace ProjectPhotoTrap
                 web_request.GetResponse();
             }
         }
-
         private async void SaveFace()
         {
-            var path = savePath + namingPattern + photo_id.ToString() + endingPattern;
+            var format = "MM-dd-yyyy-hh-mm-ss";
+            var time = DateTime.Now;
+            var path = savePath+ time.ToString(format) + namingPattern + photo_id.ToString() + endingPattern;
             using var httpClient = new HttpClient();
             using var response = await httpClient.GetAsync(link + GET_IMAGE);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 SaveFace();
                 return;
-                // throw new Exception($"Failed to download image. Status code: {response.StatusCode}");
             }
             if (!response.Content.Headers.ContentType.MediaType.StartsWith("image/"))
             {
                 SaveFace();
                 return;
-                // throw new Exception("The URL does not contain an image.");
             }
             while (File.Exists(path))
             {
@@ -109,7 +103,6 @@ namespace ProjectPhotoTrap
             using var responseStream = await response.Content.ReadAsStreamAsync();
             await responseStream.CopyToAsync(fileStream);
         }
-
         private void SetFaceDet()
         {
             String pattern = TURN_ON_FACE_DETECTION;
@@ -118,9 +111,6 @@ namespace ProjectPhotoTrap
             web_request.Method = "GET";
             web_request.GetResponse();
         }
-
-
-
         private String ObtainLink(String str)
         {
             String link = null;
@@ -132,10 +122,6 @@ namespace ProjectPhotoTrap
             }
             return link;
         }
-        //private bool SavePhoto()
-        //{
-
-        //}   
-
+       
     }
 }
