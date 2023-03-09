@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Documents\\csharp\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj": {}
+    "D:\\Documents\\C#\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj": {}
   },
   "projects": {
-    "D:\\Documents\\csharp\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj": {
+    "D:\\Documents\\C#\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Documents\\csharp\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj",
+        "projectUniqueName": "D:\\Documents\\C#\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj",
         "projectName": "ProjectPhotoTrap",
-        "projectPath": "D:\\Documents\\csharp\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj",
+        "projectPath": "D:\\Documents\\C#\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap.csproj",
         "packagesPath": "C:\\Users\\Anton\\.nuget\\packages\\",
-        "outputPath": "D:\\Documents\\csharp\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\obj\\",
+        "outputPath": "D:\\Documents\\C#\\Projects\\PhotoTrap\\ProjectPhotoTrap\\ProjectPhotoTrap\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Anton\\AppData\\Roaming\\NuGet\\NuGet.Config",
